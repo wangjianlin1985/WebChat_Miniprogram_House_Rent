@@ -1,0 +1,57 @@
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace命名空间，为了对sql语句进行隔离，方便管理，mapper开发dao方式，使用namespace有特殊作用  
+mapper代理开发时将namespace指定为mapper接口的全限定名  
+ -->
+<mapper namespace="com.chengxusheji.mapper.MinsuMapper"> 
+<!--在mapper.xml文件中配置很多的sql语句，执行每个sql语句时，封装为MappedStatement对象 
+mapper.xml以statement为单位管理sql语句  
+ -->
+	<!-- 添加民宿记录 -->
+	<insert id="addMinsu" parameterType="minsu">
+		insert into t_minsu(areaObj,minsuName,minsuPhoto,price,minsuDesc,minsuMemo,ownerObj,addTime) values 
+		(#{areaObj.areaId},#{minsuName},#{minsuPhoto},#{price},#{minsuDesc},#{minsuMemo},#{ownerObj.ownerUserName},#{addTime})
+	</insert>
+
+	<!-- 按照查询条件分页查询民宿记录 -->
+	<select id="queryMinsu" resultMap="minsuMap" >
+		select t_minsu.* from t_minsu,t_area,t_owner ${where} and t_minsu.areaObj = t_area.areaId and t_minsu.ownerObj = t_owner.ownerUserName limit #{startIndex},#{pageSize}
+	</select>
+	<resultMap id="minsuMap" type="minsu">
+        <id property="minsuId" column="minsuId" />
+        <association property="areaObj" column="areaObj" select="com.chengxusheji.mapper.AreaMapper.getArea" />
+        <association property="ownerObj" column="ownerObj" select="com.chengxusheji.mapper.OwnerMapper.getOwner" />
+    </resultMap>
+
+    <!-- 按照查询条件查询所有民宿记录 -->
+	<select id="queryMinsuList" resultMap="minsuMap" >
+		select t_minsu.* from t_minsu,t_area,t_owner ${where} and t_minsu.areaObj = t_area.areaId and t_minsu.ownerObj = t_owner.ownerUserName
+	</select>
+	
+	
+	 
+	<!-- 查询最新民宿记录 -->
+	<select id="queryLatestMinsu" resultMap="minsuMap" >
+		select t_minsu.* from t_minsu,t_area,t_owner ${where} and t_minsu.areaObj = t_area.areaId and t_minsu.ownerObj = t_owner.ownerUserName order by t_minsu.addTime DESC limit 0,8
+	</select>
+
+    <!-- 按照查询条件的民宿记录数 -->
+	<select id="queryMinsuCount" resultType="int">
+		select count(*) from t_minsu,t_area,t_owner ${where} and t_minsu.areaObj = t_area.areaId and t_minsu.ownerObj = t_owner.ownerUserName
+	</select>
+
+	<!-- 根据主键查询某个民宿记录 -->
+	<select id="getMinsu" parameterType="int" resultMap="minsuMap">
+		select * from t_minsu where t_minsu.minsuId = #{minsuId}
+	</select>
+
+	<!-- 更新民宿记录 -->
+	<update id="updateMinsu" parameterType="minsu">
+		update t_minsu set areaObj=#{areaObj.areaId},minsuName=#{minsuName},minsuPhoto=#{minsuPhoto},price=#{price},minsuDesc=#{minsuDesc},minsuMemo=#{minsuMemo},ownerObj=#{ownerObj.ownerUserName},addTime=#{addTime} where minsuId = #{minsuId}
+	</update>
+
+	<!-- 删除民宿记录 -->
+	<delete id="deleteMinsu" parameterType="int">
+		delete from t_minsu where minsuId=#{minsuId}
+	</delete>
+
+</mapper>

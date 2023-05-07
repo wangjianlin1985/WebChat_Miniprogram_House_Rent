@@ -1,0 +1,50 @@
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace命名空间，为了对sql语句进行隔离，方便管理，mapper开发dao方式，使用namespace有特殊作用  
+mapper代理开发时将namespace指定为mapper接口的全限定名  
+ -->
+<mapper namespace="com.chengxusheji.mapper.OrderInfoMapper"> 
+<!--在mapper.xml文件中配置很多的sql语句，执行每个sql语句时，封装为MappedStatement对象 
+mapper.xml以statement为单位管理sql语句  
+ -->
+	<!-- 添加订单记录 -->
+	<insert id="addOrderInfo" parameterType="orderInfo">
+		insert into t_orderInfo(minsuObj,userObj,liveDate,orderDays,totalPrice,orderMemo,orderState,orderTime) values 
+		(#{minsuObj.minsuId},#{userObj.user_name},#{liveDate},#{orderDays},#{totalPrice},#{orderMemo},#{orderState},#{orderTime})
+	</insert>
+
+	<!-- 按照查询条件分页查询订单记录 -->
+	<select id="queryOrderInfo" resultMap="orderInfoMap" >
+		select t_orderInfo.* from t_orderInfo,t_minsu,t_userInfo ${where} and t_orderInfo.minsuObj = t_minsu.minsuId and t_orderInfo.userObj = t_userInfo.user_name limit #{startIndex},#{pageSize}
+	</select>
+	<resultMap id="orderInfoMap" type="orderInfo">
+        <id property="orderId" column="orderId" />
+        <association property="minsuObj" column="minsuObj" select="com.chengxusheji.mapper.MinsuMapper.getMinsu" />
+        <association property="userObj" column="userObj" select="com.chengxusheji.mapper.UserInfoMapper.getUserInfo" />
+    </resultMap>
+
+    <!-- 按照查询条件查询所有订单记录 -->
+	<select id="queryOrderInfoList" resultMap="orderInfoMap" >
+		select t_orderInfo.* from t_orderInfo,t_minsu,t_userInfo ${where} and t_orderInfo.minsuObj = t_minsu.minsuId and t_orderInfo.userObj = t_userInfo.user_name
+	</select>
+
+    <!-- 按照查询条件的订单记录数 -->
+	<select id="queryOrderInfoCount" resultType="int">
+		select count(*) from t_orderInfo,t_minsu,t_userInfo ${where} and t_orderInfo.minsuObj = t_minsu.minsuId and t_orderInfo.userObj = t_userInfo.user_name
+	</select>
+
+	<!-- 根据主键查询某个订单记录 -->
+	<select id="getOrderInfo" parameterType="int" resultMap="orderInfoMap">
+		select * from t_orderInfo where t_orderInfo.orderId = #{orderId}
+	</select>
+
+	<!-- 更新订单记录 -->
+	<update id="updateOrderInfo" parameterType="orderInfo">
+		update t_orderInfo set minsuObj=#{minsuObj.minsuId},userObj=#{userObj.user_name},liveDate=#{liveDate},orderDays=#{orderDays},totalPrice=#{totalPrice},orderMemo=#{orderMemo},orderState=#{orderState},orderTime=#{orderTime} where orderId = #{orderId}
+	</update>
+
+	<!-- 删除订单记录 -->
+	<delete id="deleteOrderInfo" parameterType="int">
+		delete from t_orderInfo where orderId=#{orderId}
+	</delete>
+
+</mapper>

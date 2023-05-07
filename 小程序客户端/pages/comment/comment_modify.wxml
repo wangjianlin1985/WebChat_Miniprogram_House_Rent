@@ -1,0 +1,60 @@
+<view class="container">
+  <loading hidden="{{loadingHide}}">
+    {{loadingText}}
+  </loading>
+  <view class="title">编辑评论</view>
+
+  <view class="comment_modify_view">
+    <form bindsubmit="formSubmit">
+       <view class="formItem">
+        <view class="label">评论id：</view>
+        <view class="formControl">
+          <input type="text" name="comment.commentId" disabled="true" value="{{commentId}}" />
+        </view>
+      </view>
+      <view class="formItem">
+        <view class="label">被评民宿：</view>
+        <view class="formControl">
+          <picker bindchange="bind_minsuObj_change" value="{{minsuObj_Index}}" range-key="minsuName" range="{{minsus}}">
+            <view style="display:flex;border:1px solid green;">
+              <input hidden="true" name="comment.minsuObj.minsuId" value="{{minsus[minsuObj_Index].minsuId}}" />
+              <input style="width:90%;border:0px;" value="{{minsus[minsuObj_Index].minsuName}}"></input>
+              <image class="arrow-r" src="/images/arrow-r-0.png"></image>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="formItem" style="align-items:flex-start;">
+        <view class="label">评论内容：</view>
+        <view class="formControl">
+           <textarea placeholder="请输入评论内容" maxlength="800" name="comment.content" value="{{content}}" />
+        </view>
+      </view>
+
+      <view class="formItem">
+        <view class="label">评论用户：</view>
+        <view class="formControl">
+          <picker bindchange="bind_userObj_change" value="{{userObj_Index}}" range-key="name" range="{{userInfos}}">
+            <view style="display:flex;border:1px solid green;">
+              <input hidden="true" name="comment.userObj.user_name" value="{{userInfos[userObj_Index].user_name}}" />
+              <input style="width:90%;border:0px;" value="{{userInfos[userObj_Index].name}}"></input>
+              <image class="arrow-r" src="/images/arrow-r-0.png"></image>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="formItem">
+        <view class="label">评论时间：</view>
+        <view class="formControl">
+          <input type="text" name="comment.commentTime" placeholder="请输入评论时间" value="{{commentTime}}" />
+        </view>
+      </view>
+
+      <view>
+        <button class="vBtn_ok" formType="submit" disabled="{{disabled}}">提交修改</button>
+      </view>
+    </form>
+  </view>
+</view>

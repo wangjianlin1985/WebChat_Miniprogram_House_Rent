@@ -1,0 +1,73 @@
+<view class="container">
+  <view class="toggleQview" bindtap="toggleQueryViewHide" style="padding:5px;">显示或隐藏查询视图</view>
+  <view class="queryView" hidden="{{queryViewHidden}}">
+    <view class="queryParams">
+      <view class="queryItem">
+        <view class="label">宿主用户名：</view>
+        <view class="searchControl"><input data-id="ownerUserName" placeholder="请输入宿主用户名关键字" value="{{ownerUserName}}" bindinput="searchValueInput" /></view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">宿主姓名：</view>
+        <view class="searchControl"><input data-id="name" placeholder="请输入宿主姓名关键字" value="{{name}}" bindinput="searchValueInput" /></view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">出生日期：</view>
+         <view class="searchControl">
+          <picker mode="date" value="{{birthDate}}" start="1970-01-01" end="2030-01-01" bindchange="bind_birthDate_change" >
+            <view>
+              <input style="width:75%;display:inline-block;float:left;" placeholder="选择出生日期" value="{{birthDate}}"></input>
+              <text class="clearButton" catchtap="clear_birthDate">x</text>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">联系电话：</view>
+        <view class="searchControl"><input data-id="telephone" placeholder="请输入联系电话关键字" value="{{telephone}}" bindinput="searchValueInput" /></view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">审核状态：</view>
+        <view class="searchControl"><input data-id="shzt" placeholder="请输入审核状态关键字" value="{{shzt}}" bindinput="searchValueInput" /></view>
+      </view>
+
+    </view>
+
+    <view class="queryButton">
+       <button class="font_12 fl_r op-btn mr_10" bindtap="queryOwner">查询</button>
+    </view>
+  </view>
+
+  <view class="ownerList">
+  <block wx:for-items="{{owners}}" wx:key="{{index}}">
+    <view class="ownerItem">
+        <view class="ownerImg">
+          <image src="{{item.ownerPhotoUrl}}"></image>
+        </view>
+        <navigator url="owner_detail?ownerUserName={{item.ownerUserName}}" hover-class="navigator-hover">
+        <view class="ownerText">
+          <view>宿主用户名：{{item.ownerUserName}}</view>
+        </view>
+        </navigator>
+    </view>
+    <view class="opt_view" style="display:none;">
+      <button class="font_12 fl_r del-btn mr_10" bindtap="removeOwner" data-ownerusername="{{item.ownerUserName}}">删除</button> 
+      <navigator url="owner_modify?ownerUserName={{item.ownerUserName}}" hover-class="navigator-hover">
+        <button class="font_12 fl_r op-btn mr_10">编辑</button>
+      </navigator>
+    </view>
+  </block>
+  </view>
+
+  <view hidden="{{loading_hide}}" class="loading">
+    <view class="loadingImg"><image src="/images/loading.gif" mode="aspectFill"></image></view>
+    <view class="loadingTxt">..加载中..</view>
+  </view>
+  <view class="nodata_view" hidden="{{nodata_hide}}">
+    <image src="/images/Noline.png" mode="widthFix"></image>
+  </view>
+</view>
+

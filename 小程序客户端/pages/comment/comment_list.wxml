@@ -1,0 +1,70 @@
+<view class="container">
+  <view class="toggleQview" bindtap="toggleQueryViewHide" style="padding:5px;">显示或隐藏查询视图</view>
+  <view class="queryView" hidden="{{queryViewHidden}}">
+    <view class="queryParams">
+      <view class="queryItem">
+        <view class="label">被评民宿：</view>
+        <view class="searchControl">
+          <picker bindchange="bind_minsuObj_change" value="{{minsuObj_Index}}" range-key="minsuName" range="{{minsus}}">
+            <view class="value" name="types">
+              <input style="width:75%;display:inline-block;float:left;" value="{{minsus[minsuObj_Index].minsuName}}"></input>
+              <image class="arrow-r" src="/images/arrow-r-0.png"></image>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">评论用户：</view>
+        <view class="searchControl">
+          <picker bindchange="bind_userObj_change" value="{{userObj_Index}}" range-key="name" range="{{userInfos}}">
+            <view class="value" name="types">
+              <input style="width:75%;display:inline-block;float:left;" value="{{userInfos[userObj_Index].name}}"></input>
+              <image class="arrow-r" src="/images/arrow-r-0.png"></image>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">评论时间：</view>
+        <view class="searchControl"><input data-id="commentTime" placeholder="请输入评论时间关键字" value="{{commentTime}}" bindinput="searchValueInput" /></view>
+      </view>
+
+    </view>
+
+    <view class="queryButton">
+       <button class="font_12 fl_r op-btn mr_10" bindtap="queryComment">查询</button>
+    </view>
+  </view>
+
+  <view class="commentList">
+  <block wx:for-items="{{comments}}" wx:key="{{index}}">
+    <view class="commentItem">
+        <navigator url="comment_detail?commentId={{item.commentId}}" hover-class="navigator-hover">
+        <view class="commentText">
+          <view>被评民宿：{{item.minsuObj.minsuName}}</view>
+          <view>评论内容：{{item.content}}</view>
+          <view>评论用户：{{item.userObj.name}}</view>
+          <view>评论时间：{{item.commentTime}}</view>
+        </view>
+        </navigator>
+    </view>
+    <view class="opt_view">
+      <button class="font_12 fl_r del-btn mr_10" bindtap="removeComment" data-commentid="{{item.commentId}}">删除</button> 
+      <navigator url="comment_modify?commentId={{item.commentId}}" hover-class="navigator-hover" style="display:none;">
+        <button class="font_12 fl_r op-btn mr_10">编辑</button>
+      </navigator>
+    </view>
+  </block>
+  </view>
+
+  <view hidden="{{loading_hide}}" class="loading">
+    <view class="loadingImg"><image src="/images/loading.gif" mode="aspectFill"></image></view>
+    <view class="loadingTxt">..加载中..</view>
+  </view>
+  <view class="nodata_view" hidden="{{nodata_hide}}">
+    <image src="/images/Noline.png" mode="widthFix"></image>
+  </view>
+</view>
+

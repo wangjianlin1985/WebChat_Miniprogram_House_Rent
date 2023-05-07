@@ -1,0 +1,85 @@
+<view class="container">
+  <view class="toggleQview" bindtap="toggleQueryViewHide" style="padding:5px;">显示或隐藏查询视图</view>
+  <view class="queryView" hidden="{{queryViewHidden}}">
+    <view class="queryParams">
+      <view class="queryItem">
+        <view class="label">民宿主人：</view>
+        <view class="searchControl">
+          <picker bindchange="bind_ownerObj_change" value="{{ownerObj_Index}}" range-key="name" range="{{owners}}">
+            <view class="value" name="types">
+              <input style="width:75%;display:inline-block;float:left;" value="{{owners[ownerObj_Index].name}}"></input>
+              <image class="arrow-r" src="/images/arrow-r-0.png"></image>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">发布时间：</view>
+         <view class="searchControl">
+          <picker mode="date" value="{{addTime}}" start="1970-01-01" end="2030-01-01" bindchange="bind_addTime_change" >
+            <view>
+              <input style="width:75%;display:inline-block;float:left;" placeholder="选择发布时间" value="{{addTime}}"></input>
+              <text class="clearButton" catchtap="clear_addTime">x</text>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">所在地区：</view>
+        <view class="searchControl">
+          <picker bindchange="bind_areaObj_change" value="{{areaObj_Index}}" range-key="areanName" range="{{areas}}">
+            <view class="value" name="types">
+              <input style="width:75%;display:inline-block;float:left;" value="{{areas[areaObj_Index].areanName}}"></input>
+              <image class="arrow-r" src="/images/arrow-r-0.png"></image>
+            </view>
+          </picker> 
+        </view>
+      </view>
+
+      <view class="queryItem">
+        <view class="label">民宿名称：</view>
+        <view class="searchControl"><input data-id="minsuName" placeholder="请输入民宿名称关键字" value="{{minsuName}}" bindinput="searchValueInput" /></view>
+      </view>
+
+    </view>
+
+    <view class="queryButton">
+       <button class="font_12 fl_r op-btn mr_10" bindtap="queryMinsu">查询</button>
+    </view>
+  </view>
+
+  <view class="minsuList">
+  <block wx:for-items="{{minsus}}" wx:key="{{index}}">
+    <view class="minsuItem">
+        <view class="minsuImg">
+          <image src="{{item.minsuPhotoUrl}}"></image>
+        </view>
+        <navigator url="minsu_detail?minsuId={{item.minsuId}}" hover-class="navigator-hover">
+        <view class="minsuText"> 
+          <view>所在地区：{{item.areaObj.areanName}}</view>
+          <view>民宿名称：{{item.minsuName}}</view>
+          <view>每日价格：{{item.price}}</view>
+          <view>发布时间：{{item.addTime}}</view>
+        </view>
+        </navigator>
+    </view>
+    <view class="opt_view" style="display:none;">
+      <button class="font_12 fl_r del-btn mr_10" bindtap="removeMinsu" data-minsuid="{{item.minsuId}}">删除</button> 
+      <navigator url="minsu_modify?minsuId={{item.minsuId}}" hover-class="navigator-hover">
+        <button class="font_12 fl_r op-btn mr_10">编辑</button>
+      </navigator>
+    </view>
+  </block>
+  </view>
+
+  <view hidden="{{loading_hide}}" class="loading">
+    <view class="loadingImg"><image src="/images/loading.gif" mode="aspectFill"></image></view>
+    <view class="loadingTxt">..加载中..</view>
+  </view>
+  <view class="nodata_view" hidden="{{nodata_hide}}">
+    <image src="/images/Noline.png" mode="widthFix"></image>
+  </view>
+</view>
+

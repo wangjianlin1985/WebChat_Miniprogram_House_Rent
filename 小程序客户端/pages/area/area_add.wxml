@@ -1,0 +1,22 @@
+<view class="container">
+  <loading hidden="{{loadingHide}}">
+    {{loadingText}}
+  </loading>
+  <view class="title">添加地区</view>
+
+  <view class="area_add_view">
+    <form bindsubmit="formSubmit">
+      <view class="formItem">
+        <view class="label">地区名称：</view>
+        <view class="formControl">
+          <input type="text" name="area.areanName" placeholder="请输入地区名称" value="{{areanName}}" />
+        </view>
+      </view>
+
+      <view>
+        <button class="vBtn_ok" formType="submit" disabled="{{disabled}}">提交发布</button>
+      </view>
+
+    </form>
+  </view>
+</view>
